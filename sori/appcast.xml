@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="yes"?>
+<rss xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" version="2.0">
+    <channel>
+        <title>Sori</title>
+        <item>
+            <title>0.1.0</title>
+            <pubDate>Sat, 01 Aug 2026 17:49:58 +0900</pubDate>
+            <sparkle:version>5</sparkle:version>
+            <sparkle:shortVersionString>0.1.0</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
+            <enclosure url="https://3000-2.github.io/sori/Sori-0.1.0.dmg" length="4295985" type="application/octet-stream" sparkle:edSignature="oagLNCtc4VHULyM6BWErlgXQ2bDSPkHTplXgVyeJieJ5/9ZEdLWoVgXqN6ub5eWrAF+aWZxXqvABFE461ENADg=="/>
+        </item>
+    </channel>
+</rss>

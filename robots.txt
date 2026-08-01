@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://3000-2.github.io/sitemap.xml

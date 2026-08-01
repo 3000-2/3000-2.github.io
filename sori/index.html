@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sori — 단축키 하나로 간편한 녹음</title>
+<meta name="description" content="시작도 멈춤도 단축키 하나입니다. 내 목소리와 상대 목소리를 함께 담고, 텍스트로 받아씁니다.">
+<meta property="og:title" content="Sori — 단축키 하나로 간편한 녹음">
+<meta property="og:description" content="시작도 멈춤도 단축키 하나입니다. 내 목소리와 상대 목소리를 함께 담고, 텍스트로 받아씁니다.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://3000-2.github.io/sori/">
+<meta property="og:site_name" content="Sori">
+<meta property="og:locale" content="ko_KR">
+<!-- Absolute, and a 1200x630 card: crawlers routinely drop relative image URLs, and a square
+     app icon gets cropped to a sliver in the link previews people actually see. -->
+<meta property="og:image" content="https://3000-2.github.io/sori/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Sori — 단축키 하나로 간편한 녹음">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Sori — 단축키 하나로 간편한 녹음">
+<meta name="twitter:description" content="시작도 멈춤도 단축키 하나입니다. 내 목소리와 상대 목소리를 함께 담고, 텍스트로 받아씁니다.">
+<meta name="twitter:image" content="https://3000-2.github.io/sori/og.png">
+<link rel="canonical" href="https://3000-2.github.io/sori/">
+<link rel="icon" href="icon.png" type="image/png">
+<link rel="apple-touch-icon" href="icon@2x.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Sori",
+  "applicationCategory": "MultimediaApplication",
+  "operatingSystem": "macOS 15.0 or later",
+  "url": "https://3000-2.github.io/sori/",
+  "downloadUrl": "https://3000-2.github.io/sori/Sori-0.1.0.dmg",
+  "softwareVersion": "0.1.0",
+  "inLanguage": "ko",
+  "description": "마이크와 맥에서 재생되는 소리를 각각 녹음하고 텍스트로 받아쓰는 macOS 메뉴 막대 앱. 시작과 정지 모두 단축키 하나입니다.",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "KRW" }
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #FAFAFA;
+  --fg: #09090B;
+  --dim: #52525B;
+  --faint: #71717A;
+  --line: #E4E4E7;
+  --panel: #FFFFFF;
+  --rec: #DC2626;
+  --sys: #2563EB;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #09090B;
+    --fg: #FAFAFA;
+    --dim: #A1A1AA;
+    --faint: #797981;
+    --line: #232327;
+    --panel: #121215;
+    --rec: #F87171;
+    --sys: #7DA9FF;
+  }
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: "IBM Plex Sans KR", -apple-system, BlinkMacSystemFont,
+               "Apple SD Gothic Neo", system-ui, sans-serif;
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 1.65;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+  -webkit-font-smoothing: antialiased;
+}
+.wrap { max-width: 880px; margin: 0 auto; padding: 0 28px; }
+.mono {
+  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-feature-settings: "tnum";
+}
+
+/* ---------- hero ---------- */
+.hero { padding: 40px 0 clamp(80px, 14vh, 140px); }
+.brand {
+  display: flex; align-items: center; gap: 14px;
+  margin-bottom: clamp(36px, 6vh, 60px);
+}
+.brand img { border-radius: 13px; display: block; }
+.brand span { font-size: 24px; font-weight: 600; letter-spacing: -.025em; }
+/* Deliberately not mono: JetBrains Mono carries no Hangul, so Korean falls back to the sans
+   face while the mono tracking stays behind and blows the syllables apart. */
+.eyebrow {
+  font-size: 14px; font-weight: 500; letter-spacing: -.01em;
+  color: var(--rec);
+  display: flex; align-items: center; gap: 9px;
+  margin-bottom: 26px;
+}
+.eyebrow .dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--rec); flex: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .eyebrow .dot { animation: pulse 2.4s ease-in-out infinite; }
+}
+@keyframes pulse { 0%, 100% { opacity: 1 } 50% { opacity: .25 } }
+
+h1 {
+  font-size: clamp(2.6rem, 8.5vw, 5.6rem);
+  font-weight: 700;
+  letter-spacing: -0.045em;
+  line-height: 1.08;
+  margin: 0 0 32px;
+}
+.lede {
+  font-size: clamp(17px, 2.1vw, 21px);
+  font-weight: 300;
+  color: var(--dim);
+  max-width: 34em;
+  margin: 0 0 48px;
+  line-height: 1.7;
+}
+.lede b { font-weight: 600; color: var(--fg); }
+
+.cta { display: flex; align-items: center; gap: 22px; flex-wrap: wrap; }
+.dl {
+  display: inline-block;
+  background: var(--fg); color: var(--bg);
+  text-decoration: none;
+  padding: 17px 38px; border-radius: 100px;
+  font-weight: 600; font-size: 17px; letter-spacing: -.01em;
+  transition: transform .18s cubic-bezier(.2,.8,.3,1), opacity .18s;
+  cursor: pointer;
+}
+.dl:hover { transform: translateY(-2px); opacity: .88; }
+.dl:focus-visible { outline: 3px solid var(--rec); outline-offset: 3px; }
+.meta { font-size: 13px; color: var(--faint); letter-spacing: .01em; }
+.meta i { font-style: normal; opacity: .55; padding: 0 9px; }
+.meta span { color: var(--dim); }
+
+/* ---------- transcript ---------- */
+.demo { padding-bottom: clamp(90px, 15vh, 150px); }
+.paper {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 30px 32px 34px;
+  box-shadow: 0 1px 2px rgba(0,0,0,.04), 0 18px 50px -28px rgba(0,0,0,.28);
+}
+@media (prefers-color-scheme: dark) { .paper { box-shadow: none; } }
+.paper-head {
+  display: flex; align-items: baseline; justify-content: space-between;
+  gap: 16px; flex-wrap: wrap;
+  padding-bottom: 20px; margin-bottom: 26px;
+  border-bottom: 1px solid var(--line);
+  font-size: 12px; color: var(--faint);
+}
+.turn { margin-bottom: 22px; }
+.turn:last-child { margin-bottom: 0; }
+.who {
+  font-size: 11px; font-weight: 700; letter-spacing: .04em;
+  display: block; margin-bottom: 5px;
+}
+.turn.a .who { color: var(--rec); }
+.turn.b .who { color: var(--sys); }
+.who .at { color: var(--faint); font-weight: 400; margin-left: 10px; letter-spacing: 0; }
+.turn p { margin: 0; font-size: 15.5px; line-height: 1.75; color: var(--fg); }
+.demo .caption { margin: 18px 2px 0; font-size: 13px; color: var(--faint); }
+/* Sits next to the promise rather than in the requirements line, because a visitor still on
+   macOS 15 would otherwise read the transcript above as something they are about to get.
+   The macOS version cannot be detected: Safari freezes it in the user agent and has no
+   userAgentData, so this has to be said rather than branched on. */
+.demo .caption .req {
+  display: inline-block; margin-left: 6px;
+  border-left: 1px solid var(--line); padding-left: 12px;
+  color: var(--dim);
+}
+@media (max-width: 560px) {
+  .demo .caption .req { display: block; margin: 6px 0 0; border-left: 0; padding-left: 0; }
+}
+
+/* ---------- three points ---------- */
+.points {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 44px;
+  padding: clamp(70px, 11vh, 110px) 0;
+  border-top: 1px solid var(--line);
+}
+.point .n {
+  font-size: 11px; font-weight: 700; letter-spacing: .1em;
+  color: var(--faint); display: block; margin-bottom: 14px;
+}
+.point h2 {
+  font-size: 19px; font-weight: 600; letter-spacing: -.02em;
+  margin: 0 0 8px; line-height: 1.4;
+}
+.point p { margin: 0; font-size: 15px; color: var(--dim); line-height: 1.65; }
+
+/* ---------- start ---------- */
+.start { padding: clamp(70px, 11vh, 110px) 0; border-top: 1px solid var(--line); }
+.start h2 {
+  font-size: clamp(1.6rem, 3.6vw, 2.3rem); font-weight: 700;
+  letter-spacing: -.035em; margin: 0 0 40px;
+}
+.steps { list-style: none; margin: 0; padding: 0; counter-reset: s; }
+.steps li {
+  counter-increment: s;
+  display: grid; grid-template-columns: 34px 1fr; gap: 4px 18px;
+  padding: 20px 0; border-top: 1px solid var(--line);
+}
+.steps li:first-child { border-top: 0; padding-top: 0; }
+.steps li::before {
+  content: counter(s, decimal-leading-zero);
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 12px; font-weight: 500; color: var(--faint);
+  padding-top: 4px;
+}
+.steps b { font-weight: 600; font-size: 16.5px; }
+.steps small {
+  grid-column: 2; display: block;
+  font-size: 14.5px; color: var(--dim); line-height: 1.6;
+}
+kbd {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 12.5px; font-weight: 500;
+  border: 1px solid var(--line); border-bottom-width: 2px;
+  padding: 2px 7px; border-radius: 5px; white-space: nowrap;
+}
+/* The shortcut is the pitch, so in the lede it reads as part of the sentence, not as fine print. */
+.lede kbd.hot {
+  font-size: .82em; font-weight: 700;
+  color: var(--fg); background: var(--panel);
+  border-color: var(--line);
+  padding: 3px 9px; margin: 0 1px;
+}
+
+/* ---------- footer ---------- */
+footer {
+  border-top: 1px solid var(--line);
+  padding: 56px 0 88px;
+  font-size: 13.5px; color: var(--faint); line-height: 1.75;
+}
+footer .row {
+  display: flex; justify-content: space-between; align-items: baseline;
+  gap: 20px; flex-wrap: wrap; margin-bottom: 28px;
+}
+footer .row b { font-size: 15px; font-weight: 600; color: var(--fg); letter-spacing: -.01em; }
+footer a { color: var(--dim); text-decoration: none; border-bottom: 1px solid var(--line); }
+footer a:hover { color: var(--fg); }
+footer a:focus-visible { outline: 2px solid var(--rec); outline-offset: 3px; border-radius: 2px; }
+footer p { margin: 0 0 12px; max-width: 62em; }
+
+@media (max-width: 720px) {
+  .points { grid-template-columns: 1fr; gap: 34px; }
+  .paper { padding: 24px 22px 26px; }
+}
+</style>
+</head>
+<body>
+
+<main class="wrap">
+
+  <header class="hero">
+    <div class="brand">
+      <img src="icon.png" srcset="icon.png 1x, icon@2x.png 2x" width="58" height="58" alt="">
+      <span>Sori</span>
+    </div>
+    <div class="eyebrow"><span class="dot"></span>내 목소리만 녹음되셨나요</div>
+    <h1>단축키 하나로<br>간편한 녹음</h1>
+    <p class="lede">시작도 멈춤도 <kbd class="hot">⌃</kbd> <kbd class="hot">⌘</kbd> <kbd class="hot">R</kbd> 하나입니다.
+      내 목소리와 <b>상대 목소리를 함께</b> 담고, 텍스트로 받아씁니다.</p>
+    <div class="cta">
+      <a class="dl" id="download" href="Sori-0.1.0.dmg">내려받기</a>
+      <div class="meta mono" id="dlmeta">0.1.0<i>·</i><span>macOS 15+</span><i>·</i><span>무료</span></div>
+    </div>
+  </header>
+
+  <section class="demo">
+    <div class="paper">
+      <div class="paper-head mono">
+        <span>transcript.txt</span>
+        <span>2026-07-24 14:03</span>
+      </div>
+      <div class="turn a">
+        <span class="who mono">SPEAKER 1<span class="at">00:00</span></span>
+        <p>네 그러면 오늘은 가입 이탈 건 보려고 하는데요 지난주에 주신 수치가 3단계에서 절반 넘게 빠지는 걸로 나와 있어서 그 부분부터 보면 좋을 것 같습니다</p>
+      </div>
+      <div class="turn b">
+        <span class="who mono">SPEAKER 2<span class="at">00:11</span></span>
+        <p>맞습니다 정확히는 오십사 퍼센트고요 그 단계가 본인 인증 넣은 화면이라 거기서 빠지는 건 어느 정도 예상은 했는데 생각보다 폭이 큽니다</p>
+      </div>
+      <div class="turn a">
+        <span class="who mono">SPEAKER 1<span class="at">00:24</span></span>
+        <p>인증을 뒤로 미루는 건 검토해 보셨어요</p>
+      </div>
+      <div class="turn b">
+        <span class="who mono">SPEAKER 2<span class="at">00:29</span></span>
+        <p>가입 다 끝내고 첫 결제 직전으로 옮기는 안을 보고 있는데 그러면 인증 안 한 계정이 쌓이는 문제가 있어서 정책팀이랑 한 번 더 이야기해야 할 것 같아요</p>
+      </div>
+    </div>
+    <p class="caption">예시 — 내 목소리와 상대 목소리를 따로 녹음해 말한 사람이 나뉩니다
+      <span class="req">받아쓰기는 macOS 26 이상</span></p>
+  </section>
+
+  <section class="points">
+    <div class="point">
+      <span class="n mono">01</span>
+      <h2>누르면 바로 녹음</h2>
+      <p>어느 앱에 있든 같은 단축키로 시작하고 멈춥니다. 창을 띄우거나 장치를 고를 일이 없습니다.</p>
+    </div>
+    <div class="point">
+      <span class="n mono">02</span>
+      <h2>상대 목소리도 담깁니다</h2>
+      <p>화상회의든 영상이든, 스피커로 나오는 소리를 그대로 녹음합니다. 케이블도 별도 프로그램도 필요 없습니다.</p>
+    </div>
+    <div class="point">
+      <span class="n mono">03</span>
+      <h2>이 맥 안에서 끝납니다</h2>
+      <p>받아쓰기까지 이 맥에서 이뤄집니다. 녹음과 텍스트를 서버로 보내는 코드는 없습니다.</p>
+    </div>
+  </section>
+
+  <section class="start">
+    <h2>시작하기</h2>
+    <ol class="steps">
+      <li>
+        <b>응용 프로그램으로 드래그</b>
+        <small>내려받은 파일을 열면 바로가기가 함께 들어 있습니다.</small>
+      </li>
+      <li>
+        <b>Sori 실행</b>
+      </li>
+      <li>
+        <b><kbd>⌃</kbd> <kbd>⌘</kbd> <kbd>R</kbd> 로 녹음</b>
+        <small>마이크와 화면 기록 권한을 묻습니다. 화면을 녹화하지는 않습니다 — 맥이 시스템 소리를 그 권한 아래에 두고 있어서입니다.</small>
+      </li>
+    </ol>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="row">
+      <b id="ver" class="mono">Sori 0.1.0</b>
+      <a href="licenses.html">오픈소스 라이선스</a>
+    </div>
+    <p>무료로 제공되며 자유롭게 사용하실 수 있습니다. 있는 그대로 제공되고 어떠한 보증도 하지 않으며,
+      녹음 실패나 파일 손실을 비롯해 사용 과정에서 생긴 손해에 대해서는 책임지지 않습니다.
+      앱을 변경해 다시 배포하실 수는 없습니다.</p>
+  </div>
+</footer>
+
+<script>
+// The appcast is the only place that knows what shipped. Reading it keeps the button honest,
+// and makes this page a usable answer when the updater inside the app cannot reach that feed.
+(function () {
+  fetch('appcast.xml', { cache: 'no-cache' })
+    .then(function (r) { return r.ok ? r.text() : Promise.reject(r.status); })
+    .then(function (text) {
+      var doc = new DOMParser().parseFromString(text, 'application/xml');
+      if (doc.querySelector('parsererror')) return;
+
+      var best = null, bestBuild = -1;
+      doc.querySelectorAll('item').forEach(function (item) {
+        var enclosure = item.querySelector('enclosure');
+        if (!enclosure) return;
+        var build = parseInt(
+          (item.getElementsByTagName('sparkle:version')[0] || {}).textContent ||
+          enclosure.getAttribute('sparkle:version') || '0', 10);
+        if (!(build > bestBuild)) return;
+        bestBuild = build;
+        best = {
+          url: enclosure.getAttribute('url'),
+          bytes: parseInt(enclosure.getAttribute('length') || '0', 10),
+          version:
+            ((item.getElementsByTagName('sparkle:shortVersionString')[0] || {}).textContent ||
+             enclosure.getAttribute('sparkle:shortVersionString') || '').trim()
+        };
+      });
+      if (!best || !best.url) return;
+
+      var name = best.url.split('/').pop();
+      var bits = [];
+      if (best.version) bits.push(best.version);
+      bits.push('<span>macOS 15+</span>');
+      if (best.bytes) bits.push('<span>' + (best.bytes / 1048576).toFixed(1) + 'MB</span>');
+      else bits.push('<span>무료</span>');
+
+      document.getElementById('download').href = name;
+      document.getElementById('dlmeta').innerHTML = bits.join('<i>·</i>');
+      if (best.version) document.getElementById('ver').textContent = 'Sori ' + best.version;
+    })
+    .catch(function () { /* the hardcoded link in the markup stays */ });
+})();
+</script>
+
+</body>
+</html>
