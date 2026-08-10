@@ -3,6 +3,17 @@
     <channel>
         <title>Sori</title>
         <item>
+            <title>0.2.0</title>
+            <pubDate>Mon, 10 Aug 2026 17:26:35 +0900</pubDate>
+            <sparkle:version>6</sparkle:version>
+            <sparkle:shortVersionString>0.2.0</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
+            <enclosure url="https://3000-2.github.io/sori/Sori-0.2.0.dmg" length="4370690" type="application/octet-stream" sparkle:edSignature="2YqBE3G7M5FBGyMbAq5Ro1sIzxiwiegXaONpioOfaxlp30rST5EA/2K+yuCnJNROxiXwC5285VakzVXzM+ONCQ=="/>
+            <sparkle:deltas>
+                <enclosure url="https://3000-2.github.io/sori/Sori6-5.delta" sparkle:deltaFrom="5" length="574586" type="application/octet-stream" sparkle:deltaFromSparkleExecutableSize="977808" sparkle:deltaFromSparkleLocales="de,he,ar,el,ja,fa,uk" sparkle:edSignature="PtN6e6/1rNbiKJylKjEFvzqHrjs9aCzeMFthUFfoGcew9DN7NT0XD3Xo8KZJRipplS25PDKVPeFgdXBJWyZtCg=="/>
+            </sparkle:deltas>
+        </item>
+        <item>
             <title>0.1.0</title>
             <pubDate>Sat, 01 Aug 2026 17:49:58 +0900</pubDate>
             <sparkle:version>5</sparkle:version>
